@@ -5,19 +5,19 @@ import threading
 
 class RuckusApp(rumps.App):
     def __init__(self):
-        super(RuckusApp, self).__init__("Ruckus")
+        super(RuckusApp, self).__init__("📻 Ruckus")
         self.menu = ["Play (5 min)", "Play (10 min)", "Play (30 min)", "Stop"]
         self.is_playing = False
         self.play_thread = None
 
-    def generate_binaural_beat(self, duration, carrier_freq=110, beat_freq=4, sample_rate=44100):
+    def generate_binaural_beat(self, duration, carrier_freq=440, beat_freq=4, sample_rate=44100):
         t = np.linspace(0, duration, int(sample_rate * duration), False)
         left_freq = carrier_freq
         right_freq = carrier_freq + beat_freq
         left_channel = np.sin(2 * np.pi * left_freq * t)
         right_channel = np.sin(2 * np.pi * right_freq * t)
         audio_data = np.column_stack((left_channel, right_channel))
-        return audio_data / (np.max(np.abs(audio_data)) * 2)
+        return audio_data / np.max(np.abs(audio_data))
 
     def play_audio(self, duration):
         audio_data = self.generate_binaural_beat(duration)
@@ -40,20 +40,20 @@ class RuckusApp(rumps.App):
 
     def play_beat(self, duration):
         if self.is_playing:
-            rumps.notification("Ruckus", "Already Playing", "Stop the current beat before starting a new one.")
+            rumps.notification("📻 Ruckus", "Already Playing", "Stop the current beat before starting a new one.")
         else:
             self.play_thread = threading.Thread(target=self.play_audio, args=(duration,))
             self.play_thread.start()
-            rumps.notification("Ruckus", "Started", f"Playing a {duration//60}-minute binaural beat.")
+            rumps.notification("📻 Ruckus", "Started", f"Playing a {duration//60}-minute binaural beat.")
 
     @rumps.clicked("Stop")
     def stop(self, _):
         if self.is_playing:
             sd.stop()
             self.is_playing = False
-            rumps.notification("Ruckus", "Stopped", "Binaural beat playback stopped.")
+            rumps.notification("📻 Ruckus", "Stopped", "Binaural beat playback stopped.")
         else:
-            rumps.notification("Ruckus", "Not Playing", "No binaural beat is currently playing.")
+            rumps.notification("📻 Ruckus", "Not Playing", "No binaural beat is currently playing.")
 
 def main():
     RuckusApp().run()
