@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ruckus"
+authors = [
+    {name = "Justin Donaldson", email = "jjd.io"},
+]
+description = "A binaural beat generator menu bar app"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["binaural", "beats", "audio", "menubar", "app"]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Environment :: MacOS X :: Aqua",
+]
+dependencies = [
+    "rumps",
+    "numpy",
+    "sounddevice",
+]
+dynamic = ["version"]
+
+[project.scripts]
+ruckus = "ruckus.__init__:main"
+
+[tool.setuptools_scm]
+write_to = "src/ruckus/_version.py"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ruckus*"]
+namespaces = false
