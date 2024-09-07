@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ruckus"
 authors = [
-    {name = "Justin Donaldson", email = "jjd.io"},
+    {name = "Justin Donaldson", email = "jjd@jjd.io"},
 ]
 description = "A binaural beat generator menu bar app"
 readme = "README.md"

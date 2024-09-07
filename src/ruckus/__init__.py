@@ -10,14 +10,14 @@ class RuckusApp(rumps.App):
         self.is_playing = False
         self.play_thread = None
 
-    def generate_binaural_beat(self, duration, carrier_freq=440, beat_freq=4, sample_rate=44100):
+    def generate_binaural_beat(self, duration, carrier_freq=110, beat_freq=4, sample_rate=44100):
         t = np.linspace(0, duration, int(sample_rate * duration), False)
         left_freq = carrier_freq
         right_freq = carrier_freq + beat_freq
         left_channel = np.sin(2 * np.pi * left_freq * t)
         right_channel = np.sin(2 * np.pi * right_freq * t)
         audio_data = np.column_stack((left_channel, right_channel))
-        return audio_data / np.max(np.abs(audio_data))
+        return audio_data / (np.max(np.abs(audio_data)) * 2)
 
     def play_audio(self, duration):
         audio_data = self.generate_binaural_beat(duration)
@@ -55,5 +55,8 @@ class RuckusApp(rumps.App):
         else:
             rumps.notification("Ruckus", "Not Playing", "No binaural beat is currently playing.")
 
-if __name__ == "__main__":
+def main():
     RuckusApp().run()
+
+if __name__ == "__main__":
+    main()
